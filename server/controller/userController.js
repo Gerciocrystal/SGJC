@@ -57,8 +57,14 @@ exports.getUser = asyncHandler(async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    let user = await User.findOne({ username });
-    const alumini = await Alumini.findOne({ cod_estudante: username });
+    let user = await User.findOne({ username }).populate(
+      "departamento",
+      "nome sigla"
+    );
+    const alumini = await Alumini.findOne({ cod_estudante: username }).populate(
+      "departamento",
+      "nome sigla"
+    );
 
     if (!user && alumini) {
       user = await User.create({
@@ -84,6 +90,7 @@ exports.getUser = asyncHandler(async (req, res) => {
         username: user.username,
         email: user.email,
         type: user.type,
+        departamento: user.departamento,
         pic: user.pic,
         token: generateToken(user._id),
       });

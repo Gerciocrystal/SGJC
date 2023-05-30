@@ -13,7 +13,7 @@ const UserProvider = ({ children }) => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     setUser(userInfo);
 
-    if (!userInfo) navigate("/");
+    // if (!userInfo) navigate("/login");
   }, [navigate]);
 
   const authenticate = async (username, password) => {
@@ -28,6 +28,7 @@ const UserProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     localStorage.setItem("userInfo", null);
+    navigate("/");
   };
   return (
     <UserContext.Provider

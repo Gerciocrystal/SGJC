@@ -1,11 +1,11 @@
-import { Box, Stack, useToast } from "@chakra-ui/react";
+import { Box, Stack, useToast, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { UserState } from "../../context/UserProvider";
 import ApresentacaoService from "../../service/ApresentacaoService";
 import Card from "./Card";
+import ChartGraph from "./chart/ChartGraph";
 
 const Dashboard = () => {
-  const [apresentacoes, setApresentacoes] = useState([]);
   const [reprovados, setReprovados] = useState(0);
   const [aprovados, setAprovados] = useState(0);
   const [pendentes, setPendentes] = useState(0);
@@ -15,9 +15,8 @@ const Dashboard = () => {
 
   async function fetchApresentacoes() {
     try {
-      setApresentacoes([]);
       const data = await ApresentacaoService.getApresentacoes(user.token);
-      setApresentacoes(data.data);
+
       setAprovados(data.aprovados || 0);
       setReprovados(data.reprovados || 0);
       setPendentes(data.pendentes || 0);
@@ -38,7 +37,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <Box p="40px" display="flex" alignContent="center" justifyContent="center">
+    <VStack p="40px" spacing="40px">
       <Stack spacing="30px" direction={["column", "row"]} wrap="wrap">
         <Card
           type="Pendentes"
@@ -56,7 +55,28 @@ const Dashboard = () => {
           percentual={(reprovados * 100) / total}
         />
       </Stack>
-    </Box>
+      <Box
+        w="100%"
+        display={{ base: "none", md: "flex" }}
+        height="50vh"
+        justifyContent="center"
+        alignContent="center"
+        px="60px"
+      >
+        <ChartGraph
+          type="bar"
+          reprovados={reprovados}
+          aprovados={aprovados}
+          pendentes={pendentes}
+        />
+        <ChartGraph
+          type="doughnut"
+          reprovados={reprovados}
+          aprovados={aprovados}
+          pendentes={pendentes}
+        />
+      </Box>
+    </VStack>
   );
 };
 export default Dashboard;

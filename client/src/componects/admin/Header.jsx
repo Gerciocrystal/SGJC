@@ -1,10 +1,12 @@
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, Image, Text, useDisclosure } from "@chakra-ui/react";
 import { getRandomColor, createImageFromInitials } from "./chart/Util";
 import { AiFillSetting } from "react-icons/Ai";
 import PropTypes from "prop-types";
 import { UserState } from "../../context/UserProvider";
+import DrawerProfile from "../DrawerProfile";
 const Header = ({ name }) => {
   const { selectedSection } = UserState();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   let imgSrc = "";
   return (
@@ -26,6 +28,7 @@ const Header = ({ name }) => {
       <Box display="flex" justifyContent="space-around" alignItems="center">
         <AiFillSetting fontSize="1.5rem" />
         <Image
+          onClick={onOpen}
           boxSize="30px"
           ml="20px"
           borderRadius="full"
@@ -35,6 +38,7 @@ const Header = ({ name }) => {
               : imgSrc
           }
         />
+        <DrawerProfile isOpen={isOpen} onClose={onClose} />
       </Box>
     </Box>
   );
