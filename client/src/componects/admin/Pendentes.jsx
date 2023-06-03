@@ -34,7 +34,7 @@ import ApresentacoesLoading from "./ApresentacoesLoading";
 import { AiOutlineFilePdf } from "react-icons/ai";
 import NotificacaoService from "../../service/NotificacaoService";
 
-const Disponiveis = () => {
+const Pendentes = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = UserState();
   const Toast = useToast();
@@ -55,10 +55,16 @@ const Disponiveis = () => {
 
   async function fetchApresentacoes() {
     try {
-      const data = await ApresentacaoService.getApresentacoes(user.token);
-      setApresentacoes(data.data);
-      setSelectedApresentacao(data.data[0]);
-      console.log(data.data);
+      const response = await ApresentacaoService.getApresentacoes(user.token);
+      const data = response.data;
+      data.map((apresentacao) => {
+        if (apresentacao.status === "PENDENTE") {
+          setApresentacoes([...apresentacoes, apresentacao]);
+          console.log(apresentacoes);
+        }
+      });
+
+      setSelectedApresentacao(apresentacoes[0]);
     } catch (error) {
       Toast({
         title: "Erro",
@@ -376,4 +382,4 @@ const Disponiveis = () => {
   );
 };
 
-export default Disponiveis;
+export default Pendentes;

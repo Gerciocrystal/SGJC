@@ -45,7 +45,6 @@ exports.createApresentacao = asyncHandler(async (req, res) => {
 
 exports.getApresentacaoes = asyncHandler(async (req, res) => {
   try {
-    console.log("chegeui aqui");
     let apresentacao = await Apresentacao.find()
       .populate("author", "username email name")
       .populate("supervisor", "username email name")

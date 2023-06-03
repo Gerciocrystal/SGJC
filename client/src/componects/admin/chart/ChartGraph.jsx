@@ -1,41 +1,50 @@
 import { Box } from "@chakra-ui/react";
-import Chart from "chart.js/auto";
-import { CategoryScale } from "chart.js";
 import { useEffect, useState } from "react";
-import { Doughnut, Bar } from "react-chartjs-2";
 import PropTypes from "prop-types";
-
-Chart.register(CategoryScale);
+import { Chart } from "react-google-charts";
 
 const ChartGraph = ({ reprovados, aprovados, pendentes, type }) => {
-  const [chartData, setChartData] = useState({
-    labels: ["Pendentes", "Aprovados", "Reprovados"],
-    datasets: [
-      {
-        label: "Status dos usuarios ",
-        data: [pendentes, aprovados, reprovados],
-        backgroundColor: ["#FBD679", "#ACE87D", "#FE9F9F"],
-      },
-    ],
-  });
+  //  const [aprovadas, setAprovadas] = useState(0);
+  //  const [reprovadas, setReprovadas] = useState(0);
+  //  const [pendending, setPending] = useState(0);
 
-  useEffect(() => {
-    setChartData({
-      labels: ["Pendentes", "Aprovados", "Reprovados"],
-      datasets: [
-        {
-          label: "Status das Apresentacoes ",
-          data: [pendentes, aprovados, reprovados],
-          backgroundColor: ["#FBD679", "#ACE87D", "#FE9F9F"],
-        },
-      ],
-    });
-  }, []);
+  //   useEffect(() => {
+
+  //   }, []);
+  const options = {
+    pieHole: 0.4,
+    is3D: false,
+  };
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" flex={1}>
-      {type === "doughnut" && <Doughnut data={chartData} />}
-      {type === "bar" && <Bar data={chartData} />}
-    </Box>
+    <>
+      {type === "ColumnChart" ? (
+        <Chart
+          chartType={type}
+          data={[
+            ["Apresentacoes", "Disponiveis", { role: "style" }],
+            ["Pendentes", pendentes, "#FBD649"], // RGB value
+            ["Reprovados", reprovados, "#FF9F9F"], // English color name
+            ["Aprovados", aprovados, "#ACFD7D"],
+          ]}
+          width="100%"
+          height="300px"
+          legendToggle
+        />
+      ) : (
+        <Chart
+          chartType={type}
+          width="100%"
+          height="300px"
+          data={[
+            ["aprsentacoes", "Disponiveis"],
+            ["Aprovaodos", aprovados],
+            ["Reprovados", reprovados],
+            ["Pendentes", pendentes],
+          ]}
+          options={options}
+        />
+      )}
+    </>
   );
 };
 ChartGraph.propTypes = {

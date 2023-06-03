@@ -1,9 +1,8 @@
 import axios from "axios";
 import { getLoggedUser } from "./logedUser";
-const Deparment_BASE_API_URL = "/api/apresentacao";
-
-class ApresentacaoService {
-  async saveApresentacao(data, token) {
+const Deparment_BASE_API_URL = "/api/departamento";
+class DepartamentoService {
+  async saveDepartamento(data, token) {
     try {
       const response = await axios.post(
         Deparment_BASE_API_URL,
@@ -15,26 +14,12 @@ class ApresentacaoService {
       return null;
     }
   }
-  async getApresentacoes(token) {
+  async getDepartamentos(token) {
     try {
       const response = await axios.get(
         Deparment_BASE_API_URL,
         getLoggedUser(token)
       );
-
-      return response.data;
-    } catch (error) {
-      return null;
-    }
-  }
-  async updadeApresentacao(apresentacao, token) {
-    try {
-      const response = await axios.put(
-        Deparment_BASE_API_URL,
-        apresentacao,
-        getLoggedUser(token)
-      );
-
       return response.data;
     } catch (error) {
       console.log(error);
@@ -43,4 +28,4 @@ class ApresentacaoService {
   }
 }
 
-export default new ApresentacaoService();
+export default new DepartamentoService();

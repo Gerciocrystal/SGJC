@@ -22,7 +22,9 @@ exports.createNotificacao = asyncHandler(async (req, res) => {
 exports.getNotificacoes = asyncHandler(async (req, res) => {
   try {
     console.log(req.user);
-    const notificacoes = await Notificacao.find({ user: req.user._id });
+    const notificacoes = await Notificacao.find({
+      user: req.user._id,
+    }).populate("user", "username email");
     if (notificacoes) {
       res.json(notificacoes);
       return;

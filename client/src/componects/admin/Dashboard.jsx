@@ -64,13 +64,13 @@ const Dashboard = () => {
         px="60px"
       >
         <ChartGraph
-          type="bar"
+          type="ColumnChart"
           reprovados={reprovados}
           aprovados={aprovados}
           pendentes={pendentes}
         />
         <ChartGraph
-          type="doughnut"
+          type="PieChart"
           reprovados={reprovados}
           aprovados={aprovados}
           pendentes={pendentes}

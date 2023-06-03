@@ -57,13 +57,9 @@ exports.getUser = asyncHandler(async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    let user = await User.findOne({ username }).populate(
-      "departamento",
-      "nome sigla"
-    );
+    let user = await User.findOne({ username }).populate("departamento");
     const alumini = await Alumini.findOne({ cod_estudante: username }).populate(
-      "departamento",
-      "nome sigla"
+      "departamento"
     );
 
     if (!user && alumini) {
@@ -82,7 +78,7 @@ exports.getUser = asyncHandler(async (req, res) => {
         );
       }
     }
-    console.log(user);
+
     if (user && (await user.matchPassword(password))) {
       res.json({
         _id: user._id,

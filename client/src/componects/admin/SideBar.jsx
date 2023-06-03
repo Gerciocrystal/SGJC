@@ -81,7 +81,7 @@ const SideBar = () => {
           w="100%"
           height="50px"
           cursor="pointer"
-          background={selectedSection === "pendente" ? "#DFFAFF" : ""}
+          background={selectedSection === "pendentes" ? "#DFFAFF" : ""}
           onClick={() => setSelectedSection("pendentes")}
         >
           <BsClock fontSize="1.2rem" />

@@ -1,9 +1,8 @@
 import axios from "axios";
 import { getLoggedUser } from "./logedUser";
-const Deparment_BASE_API_URL = "/api/apresentacao";
-
-class ApresentacaoService {
-  async saveApresentacao(data, token) {
+const Deparment_BASE_API_URL = "/api/notificacao";
+class NotificacaoService {
+  async saveNotificacao(data, token) {
     try {
       const response = await axios.post(
         Deparment_BASE_API_URL,
@@ -15,7 +14,7 @@ class ApresentacaoService {
       return null;
     }
   }
-  async getApresentacoes(token) {
+  async getNotificacao(token) {
     try {
       const response = await axios.get(
         Deparment_BASE_API_URL,
@@ -24,14 +23,27 @@ class ApresentacaoService {
 
       return response.data;
     } catch (error) {
+      console.log(error);
       return null;
     }
   }
-  async updadeApresentacao(apresentacao, token) {
+  async updadeNotificacao(_id, token) {
     try {
       const response = await axios.put(
-        Deparment_BASE_API_URL,
-        apresentacao,
+        `${Deparment_BASE_API_URL}/${_id}`,
+        getLoggedUser(token)
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+  async deleteNotificacao(_id, token) {
+    try {
+      const response = await axios.delete(
+        `${Deparment_BASE_API_URL}/${_id}`,
         getLoggedUser(token)
       );
 
@@ -43,4 +55,4 @@ class ApresentacaoService {
   }
 }
 
-export default new ApresentacaoService();
+export default new NotificacaoService();

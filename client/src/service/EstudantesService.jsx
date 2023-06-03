@@ -1,9 +1,14 @@
 import axios from "axios";
 import { getLoggedUser } from "./logedUser";
-const Deparment_BASE_API_URL = "/api/apresentacao";
+const Deparment_BASE_API_URL = "/api/alumini";
+class EstudamteService {
+  configEmpty = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
 
-class ApresentacaoService {
-  async saveApresentacao(data, token) {
+  async saveEstudante(data, token) {
     try {
       const response = await axios.post(
         Deparment_BASE_API_URL,
@@ -15,23 +20,10 @@ class ApresentacaoService {
       return null;
     }
   }
-  async getApresentacoes(token) {
+  async getEstudantes(token) {
     try {
       const response = await axios.get(
         Deparment_BASE_API_URL,
-        getLoggedUser(token)
-      );
-
-      return response.data;
-    } catch (error) {
-      return null;
-    }
-  }
-  async updadeApresentacao(apresentacao, token) {
-    try {
-      const response = await axios.put(
-        Deparment_BASE_API_URL,
-        apresentacao,
         getLoggedUser(token)
       );
 
@@ -43,4 +35,4 @@ class ApresentacaoService {
   }
 }
 
-export default new ApresentacaoService();
+export default new EstudamteService();

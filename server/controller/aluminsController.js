@@ -4,7 +4,7 @@ exports.createAlumini = asyncHandler(async (req, res) => {
   try {
     const { cod_estudante, nome, ano_entrada, email, departamento } = req.body;
 
-    if ((!cod_estudante || !nome, !ano_entrada || !email || !departamento)) {
+    if (!cod_estudante || !nome || !ano_entrada || !email || !departamento) {
       res.status(400);
       throw new Error("Prencha todos os campos");
     }

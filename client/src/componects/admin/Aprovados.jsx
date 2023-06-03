@@ -34,7 +34,7 @@ import ApresentacoesLoading from "./ApresentacoesLoading";
 import { AiOutlineFilePdf } from "react-icons/ai";
 import NotificacaoService from "../../service/NotificacaoService";
 
-const Disponiveis = () => {
+const Aprovados = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = UserState();
   const Toast = useToast();
@@ -55,10 +55,16 @@ const Disponiveis = () => {
 
   async function fetchApresentacoes() {
     try {
-      const data = await ApresentacaoService.getApresentacoes(user.token);
-      setApresentacoes(data.data);
-      setSelectedApresentacao(data.data[0]);
-      console.log(data.data);
+      const response = await ApresentacaoService.getApresentacoes(user.token);
+      const data = response.data;
+      data.map((apresentacao) => {
+        if (apresentacao.status === "APROVADO") {
+          setApresentacoes([...apresentacoes, apresentacao]);
+          console.log(apresentacoes);
+        }
+      });
+
+      setSelectedApresentacao(apresentacoes[0]);
     } catch (error) {
       Toast({
         title: "Erro",
@@ -205,30 +211,6 @@ const Disponiveis = () => {
                           borderRadius="base"
                           height="30px"
                           background="#F0F6FF"
-                          color="#46D676"
-                          onClick={() =>
-                            handleStatus(
-                              apresentacao._id,
-                              apresentacao.author._id,
-                              "APROVADO"
-                            )
-                          }
-                        >
-                          <Image
-                            src="/icons8-approved-48.png"
-                            borderRadius="full"
-                            boxSize="18px"
-                            mr="3px"
-                            alignSelf="center"
-                          />
-                          <Text alignSelf="center">Aprovar</Text>
-                        </Button>
-                        <Button
-                          fontWeight="normal"
-                          w="31%"
-                          borderRadius="base"
-                          height="30px"
-                          background="#F0F6FF"
                           color="#ED3548"
                           onClick={() =>
                             handleStatus(
@@ -338,20 +320,6 @@ const Disponiveis = () => {
 
             <ModalFooter>
               <Button
-                background="#46D676"
-                color="white"
-                mx={3}
-                onClick={() =>
-                  handleStatus(
-                    selectedApresentacao._id,
-                    selectedApresentacao.author._id,
-                    "APROVADO"
-                  )
-                }
-              >
-                Aprovar
-              </Button>
-              <Button
                 background="#ED3548"
                 color="white"
                 mx={3}
@@ -376,4 +344,4 @@ const Disponiveis = () => {
   );
 };
 
-export default Disponiveis;
+export default Aprovados;
