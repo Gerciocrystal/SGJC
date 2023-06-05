@@ -41,6 +41,32 @@ class ApresentacaoService {
       return null;
     }
   }
+  async deleteApresentacao(id, token) {
+    try {
+      const response = await axios.delete(
+        `${Deparment_BASE_API_URL}/${id}`,
+        getLoggedUser(token)
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+  async getMinhasApresentacoes(token) {
+    try {
+      const response = await axios.get(
+        `${Deparment_BASE_API_URL}/minhas`,
+        getLoggedUser(token)
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
 }
 
 export default new ApresentacaoService();

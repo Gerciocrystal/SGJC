@@ -26,7 +26,6 @@ exports.createReclamacao = asyncHandler(async (req, res) => {
 
     res.json(reclamacao);
   } catch (error) {
-    console.log(error);
     res.status(400);
     throw new Error("Falha no processo de criacao de nova Reclamacao");
   }

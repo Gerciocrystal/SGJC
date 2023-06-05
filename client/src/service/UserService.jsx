@@ -20,6 +20,19 @@ class UsersService {
       return null;
     }
   }
+  async getUsers(search, token) {
+    try {
+      const response = await axios.get(
+        `${Deparment_BASE_API_URL}?search=${search}`,
+        getLoggedUser(token)
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
   async Login(data) {
     try {
       const response = await axios.post(

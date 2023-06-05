@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { UserState } from "../../context/UserProvider";
 import ApresentacaoService from "../../service/ApresentacaoService";
 import Card from "./Card";
-import ChartGraph from "./chart/ChartGraph";
+import ChartGraph from "../chart/ChartGraph";
 
 const Dashboard = () => {
   const [reprovados, setReprovados] = useState(0);

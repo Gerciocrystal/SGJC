@@ -27,7 +27,9 @@ const Login = () => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userInfo"));
     if (user) {
-      navigate("/admin/home");
+      if (user.type === "ADMIN") {
+        navigate("/admin/home");
+      } else navigate("/user/home");
     }
   }, [navigate]);
   const handleClick = () => {
@@ -47,8 +49,10 @@ const Login = () => {
         });
         return;
       }
-      await authenticate(username, password); //authenticate user
-      navigate("/admin/home");
+      const data = await authenticate(username, password); //authenticate user
+      if (data.type === "ADMIN") {
+        navigate("/admin/home");
+      } else navigate("/user/home");
       Toast({
         title: "Bem vindo ao SGJC",
         status: "success",

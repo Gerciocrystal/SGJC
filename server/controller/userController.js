@@ -42,7 +42,6 @@ exports.createUser = asyncHandler(async (req, res) => {
       throw new Error("Falha no processo de criacao de usuario");
     }
   } catch (error) {
-    console.log(error);
     res.status(400);
     throw new Error("Falha no processo de Criacao de Novo Utilizador");
   }
@@ -95,8 +94,23 @@ exports.getUser = asyncHandler(async (req, res) => {
       throw new Error("Password ou Username incorrecto");
     }
   } catch (error) {
-    console.log(error);
     res.status(400);
     throw new Error("Falha no processo de procura de utilizador");
   }
+});
+
+exports.getUsers = asyncHandler(async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { username: { $regex: req.query.search, $options: "i" } },
+          { type: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+
+  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+
+  res.json(users);
 });

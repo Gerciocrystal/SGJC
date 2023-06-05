@@ -11,7 +11,7 @@ import {
   // MenuGroup,
   IconButton,
 } from "@chakra-ui/react";
-import { getRandomColor, createImageFromInitials } from "./chart/Util";
+import { getRandomColor, createImageFromInitials } from "../chart/Util";
 import { AiFillSetting } from "react-icons/ai";
 import {
   AddIcon,
@@ -24,6 +24,7 @@ import { UserState } from "../../context/UserProvider";
 import DrawerProfile from "../DrawerProfile";
 import NovoDocente from "./misselation/NovoDocente";
 import NovoAluno from "./misselation/NovoAluno";
+import Reclamacoes from "./misselation/Reclamacoes";
 const Header = ({ name }) => {
   const { selectedSection } = UserState();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,6 +38,12 @@ const Header = ({ name }) => {
     onOpen: onOpenEstudante,
     onClose: onCloseEstudante,
   } = useDisclosure();
+  const {
+    isOpen: isOpenReclamacao,
+    onOpen: onOpenReclamacao,
+    onClose: onCloseReclamacao,
+  } = useDisclosure();
+
   let imgSrc = "";
   return (
     <Box
@@ -73,7 +80,11 @@ const Header = ({ name }) => {
             >
               Adicionar estudante
             </MenuItem>
-            <MenuItem icon={<RepeatIcon />} command="⌘⇧N">
+            <MenuItem
+              icon={<RepeatIcon />}
+              command="⌘⇧N"
+              onClick={onOpenReclamacao}
+            >
               Reclamacoes
             </MenuItem>
             <MenuItem icon={<AddIcon />} command="⌘O">
@@ -98,6 +109,7 @@ const Header = ({ name }) => {
         <DrawerProfile isOpen={isOpen} onClose={onClose} />
         <NovoDocente isOpen={isOpenDocente} onClose={onCloseDocente} />
         <NovoAluno isOpen={isOpenEstudante} onClose={onCloseEstudante} />
+        <Reclamacoes isOpen={isOpenReclamacao} onClose={onCloseReclamacao} />
       </Box>
     </Box>
   );

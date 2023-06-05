@@ -1,7 +1,5 @@
 import { Box } from "@chakra-ui/react";
 import Aprovados from "../../componects/admin/Aprovados";
-// import { useEffect, useState } from "react";
-// import { useState } from "react";
 import Dashboard from "../../componects/admin/Dashboard";
 import Disponiveis from "../../componects/admin/Disponiveis";
 import Header from "../../componects/admin/Header";
@@ -12,7 +10,6 @@ import { UserState } from "../../context/UserProvider";
 
 const HomeAdmin = () => {
   const { user, selectedSection } = UserState();
-  // const [fectAgain,setFetchAgain] = useState();
 
   return (
     <Box w="100%" display="flex" justifyContent="flex-start">

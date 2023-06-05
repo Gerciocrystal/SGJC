@@ -24,7 +24,7 @@ const NovoDocente = ({ isOpen, onClose }) => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [departamento, setDepartamento] = useState("FET");
+  const [departamento, setDepartamento] = useState("");
   const [loading, setLoading] = useState(false);
   const { user } = UserState();
   const Toast = useToast();
@@ -38,7 +38,7 @@ const NovoDocente = ({ isOpen, onClose }) => {
     setLoading(true);
 
     try {
-      if (!username || !email || !name) {
+      if (!username || !email || !name || !departamento) {
         Toast({
           title: "Aviso",
           description: "Preencha todos os campos",

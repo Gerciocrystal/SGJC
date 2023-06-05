@@ -11,7 +11,9 @@ const Home = () => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userInfo"));
     if (user) {
-      navigate("/admin/home");
+      if (user.type === "ADMIN") {
+        navigate("/admin/home");
+      } else navigate("/user/home");
     }
   }, [navigate]);
   return (

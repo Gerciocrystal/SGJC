@@ -26,7 +26,7 @@ const NovoAluno = ({ isOpen, onClose }) => {
   const [cod_estudante, setCodEstudante] = useState("");
   const [email, setEmail] = useState("");
   const [ano_entrada, setAnoEntrada] = useState("");
-  const [departamento, setDepartamento] = useState("FET");
+  const [departamento, setDepartamento] = useState("");
   const [loading, setLoading] = useState(false);
   const { user } = UserState();
   const Toast = useToast();
@@ -34,12 +34,13 @@ const NovoAluno = ({ isOpen, onClose }) => {
   const fetchDepartamentos = async () => {
     const data = await DepartamentoService.getDepartamentos(user.token);
     setDepartamentos(data);
+    setDepartamento(data[0]._id);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      if (!cod_estudante || !ano_entrada || !email || !name) {
+      if (!cod_estudante || !ano_entrada || !email || !name || !departamento) {
         Toast({
           title: "Aviso",
           description: "Preencha todos os campos",
@@ -48,6 +49,7 @@ const NovoAluno = ({ isOpen, onClose }) => {
           isClosable: true,
           position: "top",
         });
+        setLoading(false);
         return;
       }
       const data = await EstudantesService.saveEstudante(
@@ -119,7 +121,7 @@ const NovoAluno = ({ isOpen, onClose }) => {
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Ano</FormLabel>
+              <FormLabel>Ano de inscricao</FormLabel>
               <Input
                 type="number"
                 value={ano_entrada}
