@@ -42,17 +42,17 @@ const Dashboard = () => {
         <Card
           type="Pendentes"
           total={pendentes}
-          percentual={(pendentes * 100) / total}
+          percentual={((pendentes * 100) / total).toFixed(1)}
         />
         <Card
           type="Aprovados"
           total={aprovados}
-          percentual={(aprovados * 100) / total}
+          percentual={((aprovados * 100) / total).toFixed(1)}
         />
         <Card
           type="Reprovados"
           total={reprovados}
-          percentual={(reprovados * 100) / total}
+          percentual={((reprovados * 100) / total).toFixed(1)}
         />
       </Stack>
       <Box

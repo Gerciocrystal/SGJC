@@ -24,6 +24,9 @@ import CategoriaService from "../../../service/CategoriaService";
 import UserService from "../../../service/UserService";
 import UserBadgeItem from "./UserBadgeItem";
 import UserListItem from "./UserListItem";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import storage from "../../connecntion/firebase";
+
 const NovaApresentacao = ({ isOpen, onClose, fetcthAgain, setFecthAgain }) => {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState([]);
@@ -35,7 +38,7 @@ const NovaApresentacao = ({ isOpen, onClose, fetcthAgain, setFecthAgain }) => {
   const [tema, setTema] = useState("");
   const [supervisor, setSupervisor] = useState("");
   const [categoria, setCategoria] = useState("");
-  const [arquivo_path, setPdf] = useState("");
+  const [arquivo_path, setPdf] = useState();
   const Toast = useToast();
   const { user } = UserState();
 
@@ -106,35 +109,60 @@ const NovaApresentacao = ({ isOpen, onClose, fetcthAgain, setFecthAgain }) => {
         });
       }
 
-      const data = await ApresentacaoService.saveApresentacao(
-        {
-          tema: tema,
-          categoria: categoria,
-          supervisor: supervisor,
-          arquivo_path: "arquivo_path",
-          participantes: JSON.stringify(selectedIds),
+      const storageRef = ref(storage, `/files/${arquivo_path.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, arquivo_path);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const percent = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setLoading(true);
+          console.log(percent);
         },
-        user.token
+        (err) => {
+          throw new Error(err);
+        },
+        () => {
+          // download url
+          getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+            setPdf(url);
+            const data = await ApresentacaoService.saveApresentacao(
+              {
+                tema: tema,
+                categoria: categoria,
+                supervisor: supervisor,
+                arquivo_path: url,
+                participantes: JSON.stringify(selectedIds),
+              },
+              user.token
+            );
+            Toast({
+              title: `Apresentacao ${data.tema}, Submetida`,
+              status: "success",
+              duration: 5000,
+              isClosable: true,
+              position: "top",
+            });
+
+            setLoading(false);
+            onClose();
+            setFecthAgain(!fetcthAgain);
+          });
+        }
       );
-      Toast({
-        title: `Apresentacao ${data.tema}, Submetida`,
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-        position: "top",
-      });
-      setFecthAgain(!fetcthAgain);
     } catch (error) {
       Toast({
         title: "Erro",
-        description: "Falha no processo de criacao apresentacao",
+        description: error,
         status: "success",
         duration: 5000,
         isClosable: true,
         position: "top",
       });
+      onClose();
     }
-    onClose();
   };
   const postDetails = (pdfFile) => {
     setLoading(true);
@@ -153,10 +181,8 @@ const NovaApresentacao = ({ isOpen, onClose, fetcthAgain, setFecthAgain }) => {
       pdfFile.type === "application/pdf" ||
       pdfFile.type === "application/pdf"
     ) {
-      //   const data = new FormData();
-
-      //   data.append("file", pdfFile);
       setPdf(pdfFile);
+
       setLoading(false);
     } else {
       Toast({

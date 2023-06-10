@@ -18,6 +18,7 @@ import NovaApresentacao from "../admin/misselation/NovaApresentacao";
 const Disponiveis = () => {
   const [apresentacoes, setApresentacoes] = useState([]);
   const [fecthAgain, setFectchAgain] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { user } = UserState();
   const Toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,6 +38,7 @@ const Disponiveis = () => {
     }
   };
   const handleDelete = async (_id) => {
+    setLoading(true);
     try {
       const data = await ApresentacaoService.deleteApresentacao(
         _id,
@@ -58,6 +60,7 @@ const Disponiveis = () => {
         isClosable: true,
         position: "top-left",
       });
+      setLoading(false);
       setFectchAgain(!fecthAgain);
     } catch (error) {
       Toast({
@@ -169,9 +172,13 @@ const Disponiveis = () => {
                   </HStack>
                   <VStack width="100px">
                     <Button
+                      isLoading={loading}
                       height="25px"
                       background="#F0F6FF"
                       color="#ED3548"
+                      isDisabled={
+                        user._id === apresentacao.author._id ? false : true
+                      }
                       onClick={() => handleDelete(apresentacao._id)}
                     >
                       <Image
@@ -186,6 +193,7 @@ const Disponiveis = () => {
                       </Text>
                     </Button>
                     <Button
+                      isLoading={loading}
                       height="25px"
                       background="#F0F6FF"
                       color="#E0A536"

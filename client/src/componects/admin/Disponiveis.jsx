@@ -153,7 +153,11 @@ const Disponiveis = () => {
                     <Td color="#E89191">
                       <HStack spacing="2px">
                         <AiOutlineFilePdf fontSize="1.2rem" />
-                        <Text>{apresentacao.tema}</Text>
+                        <Text>
+                          <Link href={apresentacao.arquivo_path} isExternal>
+                            {apresentacao.tema}
+                          </Link>
+                        </Text>
                       </HStack>
                     </Td>
 
@@ -321,7 +325,11 @@ const Disponiveis = () => {
                 <Box color="#E89191">
                   <HStack spacing="2px" cursor="pointer">
                     <AiOutlineFilePdf fontSize="1.2rem" />
-                    <Text>{selectedApresentacao.tema}</Text>
+                    <Text>
+                      <Link href={selectedApresentacao.arquivo_path} isExternal>
+                        {selectedApresentacao.tema}
+                      </Link>
+                    </Text>
                   </HStack>
                 </Box>
                 <FormControl>

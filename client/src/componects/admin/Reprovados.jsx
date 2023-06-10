@@ -159,7 +159,11 @@ const Reprovados = () => {
                     <Td color="#E89191">
                       <HStack spacing="2px">
                         <AiOutlineFilePdf fontSize="1.2rem" />
-                        <Text>{apresentacao.tema}</Text>
+                        <Text>
+                          <Link href={apresentacao.arquivo_path} isExternal>
+                            {apresentacao.tema}
+                          </Link>
+                        </Text>
                       </HStack>
                     </Td>
 

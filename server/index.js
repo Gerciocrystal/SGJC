@@ -2,11 +2,12 @@ const express = require("express");
 const dotenv = require("dotenv");
 const connectDb = require("./config/db");
 const routes = require("./routes/index");
-const upload = require("express-fileupload");
+const fileupload = require("express-fileupload");
 connectDb();
 dotenv.config();
 const app = express();
 app.use(express.json());
+app.use(fileupload());
 
 app.use("/api", routes);
 app.get("/", (req, res) => {
