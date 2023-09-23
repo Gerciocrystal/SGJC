@@ -53,18 +53,17 @@ const Reprovados = () => {
   const npage = Math.ceil(apresentacoes.length / recordPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
 
+  const [loading, setLoading] = useState(false);
   async function fetchApresentacoes() {
+    setLoading(true);
     try {
-      const response = await ApresentacaoService.getApresentacoes(user.token);
-      const data = response.data;
-      data.map((apresentacao) => {
-        if (apresentacao.status === "REPROVADO") {
-          setApresentacoes([...apresentacoes, apresentacao]);
-          console.log(apresentacoes);
-        }
-      });
-
+      const response = await ApresentacaoService.getApresentacoesEspecificas(
+        user.token,
+        "REPROVADO"
+      );
+      setApresentacoes(response.data);
       setSelectedApresentacao(apresentacoes[0]);
+      setLoading(false);
     } catch (error) {
       Toast({
         title: "Erro",
@@ -74,6 +73,7 @@ const Reprovados = () => {
         isClosable: true,
         position: "top-left",
       });
+      setLoading(false);
     }
   }
   useEffect(() => {
@@ -83,6 +83,7 @@ const Reprovados = () => {
     setCurentPage(id);
   };
   const handleStatus = async (_id, _idAuthor, status) => {
+    setLoading(true);
     try {
       const data = await ApresentacaoService.updadeApresentacao(
         { idApresentacao: _id, status: status },
@@ -106,6 +107,7 @@ const Reprovados = () => {
         position: "top-left",
       });
       onClose();
+      setLoading(false);
       setFecthAgain(!fecthAgain);
     } catch (error) {
       Toast({
@@ -116,6 +118,7 @@ const Reprovados = () => {
         isClosable: true,
         position: "top-left",
       });
+      setLoading(false);
     }
   };
   const handleAvaliar = (apresentacao) => {
@@ -141,7 +144,7 @@ const Reprovados = () => {
                 <Tr>
                   <Th color="#889F9E">Autor</Th>
                   <Th color="#889F9E">Supervisor</Th>
-                  <Th color="#889F9E">Ficheito</Th>
+                  <Th color="#889F9E">Ficheiro</Th>
                   <Th color="#889F9E">Status</Th>
                   <Th color="#889F9E">accoes</Th>
                 </Tr>
@@ -216,6 +219,7 @@ const Reprovados = () => {
                           height="30px"
                           background="#F0F6FF"
                           color="#46D676"
+                          isDisabled={loading}
                           onClick={() =>
                             handleStatus(
                               apresentacao._id,
@@ -237,6 +241,32 @@ const Reprovados = () => {
                           fontWeight="normal"
                           w="31%"
                           borderRadius="base"
+                          height="30px"
+                          background="#F0F6FF"
+                          color="#ED3548"
+                          isDisabled={true}
+                          onClick={() =>
+                            handleStatus(
+                              apresentacao._id,
+                              apresentacao.author._id,
+                              "REPROVADO"
+                            )
+                          }
+                        >
+                          <Image
+                            src="/icons8-remove-30.png"
+                            borderRadius="full"
+                            boxSize="18px"
+                            mr="3px"
+                            alignSelf="center"
+                          />
+                          <Text alignSelf="center">Reprovar</Text>
+                        </Button>
+                        <Button
+                          fontWeight="normal"
+                          w="31%"
+                          borderRadius="base"
+                          isDisabled={loading}
                           height="30px"
                           background="#F0F6FF"
                           color="#E0A536"
@@ -326,6 +356,7 @@ const Reprovados = () => {
               <Button
                 background="#46D676"
                 color="white"
+                loading={loading}
                 mx={3}
                 onClick={() =>
                   handleStatus(

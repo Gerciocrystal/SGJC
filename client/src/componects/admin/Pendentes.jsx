@@ -38,12 +38,13 @@ const Pendentes = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = UserState();
   const Toast = useToast();
+  // const [loading,setLoading]=useState(false);
   const [apresentacoes, setApresentacoes] = useState([]);
   const [currentPage, setCurentPage] = useState(1);
   const [fecthAgain, setFecthAgain] = useState(false);
   const [selectedApresentacao, setSelectedApresentacao] = useState(false);
   const [descricao, setDescricao] = useState(
-    "um texto aleatorio inventado no momento para prencher a base de dados no texte de aprovacao"
+    "um texto aleatório inventado no momento para prencher a base de dados no texte de aprovação"
   );
   const recordPerPage = 3;
   const lastIndex = currentPage * recordPerPage;
@@ -53,22 +54,23 @@ const Pendentes = () => {
   const npage = Math.ceil(apresentacoes.length / recordPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
 
+  const [loading, setLoading] = useState(false);
+
   async function fetchApresentacoes() {
+    setLoading(true);
     try {
-      const response = await ApresentacaoService.getApresentacoes(user.token);
-      const data = response.data;
-      data.map((apresentacao) => {
-        if (apresentacao.status === "PENDENTE") {
-          setApresentacoes([...apresentacoes, apresentacao]);
-          console.log(apresentacoes);
-        }
-      });
+      const response = await ApresentacaoService.getApresentacoesEspecificas(
+        user.token,
+        "PENDENTE"
+      );
+      setApresentacoes(response.data);
 
       setSelectedApresentacao(apresentacoes[0]);
+      setLoading(false);
     } catch (error) {
       Toast({
         title: "Erro",
-        description: "Falha no processo de procura de apresentacoes",
+        description: "Falha no processo de procura de apresentações",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -83,6 +85,7 @@ const Pendentes = () => {
     setCurentPage(id);
   };
   const handleStatus = async (_id, _idAuthor, status) => {
+    setLoading(true);
     try {
       const data = await ApresentacaoService.updadeApresentacao(
         { idApresentacao: _id, status: status },
@@ -99,13 +102,14 @@ const Pendentes = () => {
       console.log(notificacao);
       Toast({
         title: data.status,
-        description: `Apresentacao ${data.status}`,
+        description: `Apresentação ${data.status}`,
         status: "success",
         duration: 5000,
         isClosable: true,
         position: "top-left",
       });
       onClose();
+      setLoading(false);
       setFecthAgain(!fecthAgain);
     } catch (error) {
       Toast({
@@ -116,6 +120,7 @@ const Pendentes = () => {
         isClosable: true,
         position: "top-left",
       });
+      setLoading(false);
     }
   };
   const handleAvaliar = (apresentacao) => {
@@ -141,7 +146,7 @@ const Pendentes = () => {
                 <Tr>
                   <Th color="#889F9E">Autor</Th>
                   <Th color="#889F9E">Supervisor</Th>
-                  <Th color="#889F9E">Ficheito</Th>
+                  <Th color="#889F9E">Ficheiro</Th>
                   <Th color="#889F9E">Status</Th>
                   <Th color="#889F9E">accoes</Th>
                 </Tr>
@@ -215,6 +220,7 @@ const Pendentes = () => {
                           borderRadius="base"
                           height="30px"
                           background="#F0F6FF"
+                          isDisabled={loading}
                           color="#46D676"
                           onClick={() =>
                             handleStatus(
@@ -239,6 +245,7 @@ const Pendentes = () => {
                           borderRadius="base"
                           height="30px"
                           background="#F0F6FF"
+                          isDisabled={loading}
                           color="#ED3548"
                           onClick={() =>
                             handleStatus(
@@ -264,6 +271,7 @@ const Pendentes = () => {
                           height="30px"
                           background="#F0F6FF"
                           color="#E0A536"
+                          isDisabled={loading}
                           onClick={() => handleAvaliar(apresentacao)}
                         >
                           <Image
@@ -351,6 +359,7 @@ const Pendentes = () => {
                 background="#46D676"
                 color="white"
                 mx={3}
+                loading={loading}
                 onClick={() =>
                   handleStatus(
                     selectedApresentacao._id,

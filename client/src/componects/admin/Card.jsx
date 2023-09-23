@@ -54,6 +54,6 @@ const Card = ({ type, total, percentual }) => {
 Card.propTypes = {
   type: PropTypes.string.isRequired,
   total: PropTypes.number.isRequired,
-  percentual: PropTypes.number.isRequired,
+  percentual: PropTypes.string.isRequired,
 };
 export default Card;

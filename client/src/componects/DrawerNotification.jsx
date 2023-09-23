@@ -61,14 +61,14 @@ const DrawerNotification = ({ isOpen, onClose }) => {
                 </Box>
               ))
             ) : (
-              <Text>Sem notificacoes</Text>
+              <Text>Sem notificações</Text>
             )}
           </VStack>
         </DrawerBody>
 
         <DrawerFooter>
           <Button variant="outline" mr={3} onClick={onClose}>
-            voltar
+            Voltar
           </Button>
         </DrawerFooter>
       </DrawerContent>

@@ -20,8 +20,8 @@ const Sobre = () => {
         flexWrap="wrap"
         justifyContent="space-around"
       >
-        <Card title="Repositorio" content="" numero={1} />
-        <Card title="Certificacão" content="" numero={2} />
+        <Card title="Repositório" content="" numero={1} />
+        <Card title="Certificação" content="" numero={2} />
         <Card title="Networking" content="" numero={3} />
       </Box>
     </Box>

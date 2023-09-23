@@ -67,6 +67,19 @@ class ApresentacaoService {
       return null;
     }
   }
+  async getApresentacoesEspecificas(token, status) {
+    try {
+      const response = await axios.get(
+        `${Deparment_BASE_API_URL}/especifica?search=${status}`,
+        getLoggedUser(token)
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
 }
 
 export default new ApresentacaoService();

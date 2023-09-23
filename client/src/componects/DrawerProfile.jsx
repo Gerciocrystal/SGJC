@@ -12,10 +12,17 @@ import {
   Image,
   Text,
   HStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { UserState } from "../context/UserProvider";
 import PropTypes from "prop-types";
+import ChangePassword from "./ChangePassword";
 const DrawerProfile = ({ isOpen, onClose }) => {
+  const {
+    isOpen: isPasswordOpen,
+    onClose: onPasswordClose,
+    onOpen: onPasswordOpne,
+  } = useDisclosure();
   const { user, logout } = UserState();
   return (
     <Box color="black">
@@ -50,7 +57,7 @@ const DrawerProfile = ({ isOpen, onClose }) => {
                   mt="15px"
                   fontWeight="semibold"
                 >
-                  Estatistica do utilizador
+                  Estatística do utilizador
                 </Text>
                 <HStack spacing="30px" alignSelf="center" fontWeight="semibold">
                   <Box textAlign="center">
@@ -74,21 +81,36 @@ const DrawerProfile = ({ isOpen, onClose }) => {
             </VStack>
           </DrawerBody>
           <DrawerFooter>
-            <Button
-              background="black"
-              color="white"
-              fontWeight="semibold"
-              w="100%"
-              onClick={() => logout()}
-              _hover={{
-                background: "#00000090",
-              }}
-            >
-              Log out
-            </Button>
+            <VStack w="100%" alignItems="start" justifyContent="start">
+              <Button
+                background="#33aa55"
+                color="white"
+                fontWeight="semibold"
+                w="100%"
+                onClick={onPasswordOpne}
+                _hover={{
+                  background: "#33bb55",
+                }}
+              >
+                Trocar Password
+              </Button>
+              <Button
+                background="black"
+                color="white"
+                fontWeight="semibold"
+                w="100%"
+                onClick={() => logout()}
+                _hover={{
+                  background: "#00000090",
+                }}
+              >
+                Log out
+              </Button>
+            </VStack>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
+      <ChangePassword isOpen={isPasswordOpen} onClose={onPasswordClose} />
     </Box>
   );
 };

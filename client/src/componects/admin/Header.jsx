@@ -58,7 +58,7 @@ const Header = ({ name }) => {
         <Text color="#889F9E" fontSize="2xl" fontWeight="semibold">
           {selectedSection === "dashboard"
             ? "Dashboard"
-            : `Apresentacoes ${selectedSection}`}
+            : `Apresentações ${selectedSection}`}
         </Text>
       )}
       <Box display="flex" justifyContent="space-around" alignItems="center">
@@ -85,7 +85,7 @@ const Header = ({ name }) => {
               command="⌘⇧N"
               onClick={onOpenReclamacao}
             >
-              Reclamacoes
+              Reclamacões
             </MenuItem>
             <MenuItem icon={<AddIcon />} command="⌘O">
               Adicionar Departamento

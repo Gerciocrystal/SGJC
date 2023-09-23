@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const Alumini = require("../models/aluminsModel");
 const generateToken = require("../config/generateToken");
+const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 exports.createUser = asyncHandler(async (req, res) => {
   try {
@@ -94,6 +95,34 @@ exports.getUser = asyncHandler(async (req, res) => {
       throw new Error("Password ou Username incorrecto");
     }
   } catch (error) {
+    res.status(400);
+    throw new Error("Falha no processo de procura de utilizador");
+  }
+});
+
+exports.changePassword = asyncHandler(async (req, res) => {
+  try {
+    const { username, password, newPassword } = req.body;
+
+    let user = await User.findOne({ username }).populate("departamento");
+
+    if (user && (await user.matchPassword(password))) {
+      const salt = await bcrypt.genSalt(10);
+      const newPass = await bcrypt.hash(newPassword, salt);
+
+      user = await User.updateOne(
+        { username },
+        { password: newPass },
+        { new: true }
+      );
+
+      res.send("password Changed");
+    } else {
+      res.status(400);
+      throw new Error("Password ou Username incorrecto");
+    }
+  } catch (error) {
+    console.log(error);
     res.status(400);
     throw new Error("Falha no processo de procura de utilizador");
   }

@@ -63,18 +63,8 @@ const Dashboard = () => {
         alignContent="center"
         px="60px"
       >
-        <ChartGraph
-          type="ColumnChart"
-          reprovados={reprovados}
-          aprovados={aprovados}
-          pendentes={pendentes}
-        />
-        <ChartGraph
-          type="PieChart"
-          reprovados={reprovados}
-          aprovados={aprovados}
-          pendentes={pendentes}
-        />
+        <ChartGraph type="ColumnChart" />
+        <ChartGraph type="PieChart" />
       </Box>
     </VStack>
   );

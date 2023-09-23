@@ -47,6 +47,20 @@ class UsersService {
       return null;
     }
   }
+  async changePassword(data, token) {
+    try {
+      const response = await axios.post(
+        `${Deparment_BASE_API_URL}/chengePass`,
+        data,
+        getLoggedUser(token)
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
 }
 
 export default new UsersService();

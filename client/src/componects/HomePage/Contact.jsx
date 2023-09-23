@@ -28,10 +28,22 @@ const Contact = () => {
   const [contacto, setContacto] = useState("");
   const [problema, setProblema] = useState("login");
   const [descricao, setDescricao] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [invalidCod, setInvalidCodEstudante] = useState(false);
+  const [invalidContacto, setInvalidContacto] = useState(false);
   const Toast = useToast();
-
+  const eraseFields = () => {
+    setNome("");
+    setCod_estudante("");
+    setEmail("");
+    setContacto("");
+    setDescricao("");
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setInvalidCodEstudante(false);
+    setInvalidContacto(false);
 
     if (
       !problema ||
@@ -49,7 +61,33 @@ const Contact = () => {
         isClosable: true,
         position: "top",
       });
-
+      setIsLoading(false);
+      return;
+    }
+    if (!/01.[0-9]{4}.[0-9]/.test(cod_estudante)) {
+      Toast({
+        title: "Dados Incorectos",
+        description: "Codigo de Estudante Invalido",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+      setInvalidCodEstudante(true);
+      setIsLoading(false);
+      return;
+    }
+    if (!/8[0-9]{8}/.test(contacto)) {
+      Toast({
+        title: "Dados Incorectos",
+        description: "Contacto invalido",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+      setInvalidContacto(true);
+      setIsLoading(false);
       return;
     }
     try {
@@ -70,6 +108,8 @@ const Contact = () => {
         isClosable: true,
         position: "top",
       });
+      setIsLoading(false);
+      eraseFields();
     } catch (error) {
       Toast({
         title: "Erro no processo de criacao de Reclamacao",
@@ -78,6 +118,7 @@ const Contact = () => {
         isClosable: true,
         position: "top",
       });
+      setIsLoading(false);
     }
   };
 
@@ -97,7 +138,7 @@ const Contact = () => {
       <Box
         display="flex"
         // height={{ base: "auto", md: "465px" }}
-        width={{ base: "350px", md: "100%" }}
+        width={{ base: "350px", md: "80%" }}
         // alignItems="center"
         background="white"
         borderRadius="base"
@@ -118,7 +159,7 @@ const Contact = () => {
           <VStack spacing="90px" px={5} py={3}>
             <Box mt={2}>
               <Text fontSize="2xl" fontWeight="semibold" mb={2}>
-                Contactos de suporte
+                Contactos de Suporte
               </Text>
               <Text fontSize="sm">
                 Preencha todos os campos para que a nossa equipe de suporte
@@ -132,7 +173,7 @@ const Contact = () => {
               </Box>
               <Box display="flex" alignItems="center">
                 <AiFillPhone />
-                <Text mx={2}>840224546</Text>
+                <Text mx={2}>849999999</Text>
               </Box>
               <Box display="flex" alignItems="center">
                 <GoLocation />
@@ -157,14 +198,16 @@ const Contact = () => {
                 <FormLabel>Nome completo</FormLabel>
                 <Input
                   type="text"
+                  borderColor="blue"
                   value={nome}
                   onChange={(e) => setNome(e.target.value)}
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Codigo de Estudane</FormLabel>
+                <FormLabel>Codígo de Estudane</FormLabel>
                 <Input
                   type="text"
+                  borderColor={invalidCod ? "red" : "blue"}
                   value={cod_estudante}
                   onChange={(e) => setCod_estudante(e.target.value)}
                 />
@@ -175,14 +218,16 @@ const Contact = () => {
                 <FormLabel>Email</FormLabel>
                 <Input
                   type="email"
+                  borderColor="blue"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Numero de telefone</FormLabel>
+                <FormLabel>Número de Telefone</FormLabel>
                 <Input
                   type="text"
+                  borderColor={invalidContacto ? "red" : "blue"}
                   value={contacto}
                   onChange={(e) => setContacto(e.target.value)}
                 />
@@ -209,13 +254,19 @@ const Contact = () => {
               <FormControl>
                 <FormLabel>Detalhes do problema</FormLabel>
                 <Textarea
+                  borderColor="blue"
                   height="110px"
                   value={descricao}
                   onChange={(e) => setDescricao(e.target.value)}
                 />
               </FormControl>
             </Box>
-            <Button alignSelf="end" colorScheme="blue" onClick={handleSubmit}>
+            <Button
+              alignSelf="end"
+              colorScheme="blue"
+              onClick={handleSubmit}
+              isLoading={isLoading}
+            >
               Submeter
             </Button>
           </VStack>

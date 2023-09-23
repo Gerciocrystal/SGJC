@@ -21,6 +21,7 @@ const Hero = () => {
         display="flex"
         justifyContent="center"
         alignItems="center"
+        height="80vh"
         px="20%"
         color="white"
       >
@@ -32,12 +33,12 @@ const Hero = () => {
             mt={12}
           >
             <span style={{ color: "#F8CB2E" }}> Bem vindo</span> ao Sistema de
-            Gestao de{" "}
-            <span style={{ color: "#F8CB2E" }}>jornadas cientificas</span>
+            Gestão de{" "}
+            <span style={{ color: "#F8CB2E" }}>Jornadas Científicas</span>
           </Text>
           <Text fontSize={{ base: "sm", md: "xl" }} textAlign="center">
-            Faça parte da comunidade cientifica da UPM, mostrando seus projectos
-            ao mundo, venha e participe das jornadas cientificas
+            Faça parte da comunidade científica da UPM, mostrando seus projectos
+            ao mundo, venha e participe das jornadas científicas
           </Text>
           <Box display="flex">
             <Button

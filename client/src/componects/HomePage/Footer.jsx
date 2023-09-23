@@ -22,21 +22,21 @@ const Footer = () => {
           SGJC
         </Text>
         <Text mb={4} color="#15ABA2">
-          Sistema de gestao de jornadas cientificas
+          Sistema de Gestao de Jornadas Científicas
         </Text>
         <Text>
-          Sistema de gestao de jornadas cientificas é uma plataforma onde
-          estudantes e docentes compartilham ideias e inovacões.
+          Sistema de gestão de jornadas científicas é uma plataforma onde
+          estudantes e docentes compartilham ideias e inovações.
         </Text>
       </Box>
       <Box w={{ base: "100%", md: "auto" }} my={{ base: "20px", md: "0" }}>
         <Text fontSize="2xl" mb={3} fontWeight="bold">
           Sobre
         </Text>
-        <Text>Normas das jornadas cientificas</Text>
+        <Text>Normas das jornadas científicas</Text>
         <Text>Certificados</Text>
-        <Text>Eventos passados</Text>
-        <Text>Sugestoes e reclamaçoes</Text>
+        <Text>Eventos Passados</Text>
+        <Text>Sugestoes e reclamações</Text>
       </Box>
       <Box
         w={{ base: "100%", md: "auto" }}

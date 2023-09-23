@@ -101,7 +101,7 @@ const NovaApresentacao = ({ isOpen, onClose, fetcthAgain, setFecthAgain }) => {
       if (!tema || !categoria || !supervisor || !arquivo_path) {
         Toast({
           title: "Erro",
-          description: "Falha no processo de criacao apresentacao",
+          description: "Falha no processo de criação apresentação",
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -203,7 +203,7 @@ const NovaApresentacao = ({ isOpen, onClose, fetcthAgain, setFecthAgain }) => {
     <Modal isOpen={isOpen} onClose={onClose} size="3xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Formulario de submissão de Apresentacão</ModalHeader>
+        <ModalHeader>Formulário de submissão de Apresentação</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <VStack spacing="15px">
@@ -257,7 +257,7 @@ const NovaApresentacao = ({ isOpen, onClose, fetcthAgain, setFecthAgain }) => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>supervisor</FormLabel>
+                <FormLabel>Supervisor</FormLabel>
                 <Select
                   borderColor="#C0F5FF"
                   onChange={(e) => setSupervisor(e.target.value)}

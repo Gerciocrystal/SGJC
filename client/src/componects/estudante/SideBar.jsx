@@ -69,7 +69,7 @@ const SideBar = () => {
           onClick={() => setSelectedSection("disponiveis")}
         >
           <AiFillAppstore fontSize="1.2rem" />
-          {isOpen && <Text>Disponiveis</Text>}
+          {isOpen && <Text>Disponíveis</Text>}
         </HStack>
       </VStack>
     </Box>

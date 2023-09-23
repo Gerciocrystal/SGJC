@@ -169,3 +169,25 @@ exports.getMinhasApresentacoes = asyncHandler(async (req, res) => {
     throw new Error("falha no processo de procura de apresentacoes");
   }
 });
+
+exports.getAmoutOf = asyncHandler(async (req, res) => {
+  try {
+    const tema = req.query.search;
+    let apresentacao = await Apresentacao.find({ status: tema })
+      .populate("author", "username email name")
+      .populate("supervisor", "username email name")
+      .populate("categoria")
+      .populate("participantes", "username email name");
+
+    if (!apresentacao) {
+      res.status(400);
+      throw new Error("Nao existem apresentacao com esse nome ");
+    }
+
+    res.json({ data: apresentacao, tamanho: apresentacao.length });
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+    throw new Error("Falha no precesso de Procura de novas apresentacoes");
+  }
+});

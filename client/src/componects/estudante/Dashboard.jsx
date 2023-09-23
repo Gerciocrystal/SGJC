@@ -9,7 +9,7 @@ const Dashboard = () => {
       fontSize="3xl"
       fontWeight="bold"
     >
-      Informacao sobre as jornadas cientificas
+      Informação sobre as jornadas científicas
     </Box>
   );
 };

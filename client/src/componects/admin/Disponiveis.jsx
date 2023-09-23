@@ -43,7 +43,7 @@ const Disponiveis = () => {
   const [fecthAgain, setFecthAgain] = useState(false);
   const [selectedApresentacao, setSelectedApresentacao] = useState(false);
   const [descricao, setDescricao] = useState(
-    "um texto aleatorio inventado no momento para prencher a base de dados no texte de aprovacao"
+    "um texto aleatorio inventado no momento para prencher a base de dados no texte de aprovação"
   );
   const recordPerPage = 3;
   const lastIndex = currentPage * recordPerPage;
@@ -52,6 +52,8 @@ const Disponiveis = () => {
   const records = apresentacoes.slice(firstIndex, lastIndex);
   const npage = Math.ceil(apresentacoes.length / recordPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
+
+  const [loading, setLoadind] = useState(false);
 
   async function fetchApresentacoes() {
     try {
@@ -62,7 +64,7 @@ const Disponiveis = () => {
     } catch (error) {
       Toast({
         title: "Erro",
-        description: "Falha no processo de procura de apresentacoes",
+        description: "Falha no processo de procura de apresentações",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -77,6 +79,7 @@ const Disponiveis = () => {
     setCurentPage(id);
   };
   const handleStatus = async (_id, _idAuthor, status) => {
+    setLoadind(true);
     try {
       const data = await ApresentacaoService.updadeApresentacao(
         { idApresentacao: _id, status: status },
@@ -93,23 +96,25 @@ const Disponiveis = () => {
       console.log(notificacao);
       Toast({
         title: data.status,
-        description: `Apresentacao ${data.status}`,
+        description: `Apresentação ${data.status}`,
         status: "success",
         duration: 5000,
         isClosable: true,
         position: "top-left",
       });
       onClose();
+      setLoadind(false);
       setFecthAgain(!fecthAgain);
     } catch (error) {
       Toast({
         title: "Erro",
-        description: "Falha no processo de aprovacao da apresentacoes",
+        description: "Falha no Processo de Aprovação da Apresentações",
         status: "error",
         duration: 5000,
         isClosable: true,
         position: "top-left",
       });
+      setLoadind(false);
     }
   };
   const handleAvaliar = (apresentacao) => {
@@ -135,7 +140,7 @@ const Disponiveis = () => {
                 <Tr>
                   <Th color="#889F9E">Autor</Th>
                   <Th color="#889F9E">Supervisor</Th>
-                  <Th color="#889F9E">Ficheito</Th>
+                  <Th color="#889F9E">Ficheiro</Th>
                   <Th color="#889F9E">Status</Th>
                   <Th color="#889F9E">accoes</Th>
                 </Tr>
@@ -209,6 +214,7 @@ const Disponiveis = () => {
                           borderRadius="base"
                           height="30px"
                           background="#F0F6FF"
+                          isDisabled={loading}
                           color="#46D676"
                           onClick={() =>
                             handleStatus(
@@ -233,6 +239,7 @@ const Disponiveis = () => {
                           borderRadius="base"
                           height="30px"
                           background="#F0F6FF"
+                          isDisabled={loading}
                           color="#ED3548"
                           onClick={() =>
                             handleStatus(
@@ -257,6 +264,7 @@ const Disponiveis = () => {
                           borderRadius="base"
                           height="30px"
                           background="#F0F6FF"
+                          isDisabled={loading}
                           color="#E0A536"
                           onClick={() => handleAvaliar(apresentacao)}
                         >
@@ -349,6 +357,7 @@ const Disponiveis = () => {
                 background="#46D676"
                 color="white"
                 mx={3}
+                isLoading={loading}
                 onClick={() =>
                   handleStatus(
                     selectedApresentacao._id,
@@ -363,6 +372,7 @@ const Disponiveis = () => {
                 background="#ED3548"
                 color="white"
                 mx={3}
+                isLoading={loading}
                 onClick={() =>
                   handleStatus(
                     selectedApresentacao._id,

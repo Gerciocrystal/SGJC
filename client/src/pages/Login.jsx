@@ -20,6 +20,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setpassword] = useState("");
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { authenticate } = UserState();
   const Toast = useToast();
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ const Login = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
 
     try {
       if (!username || !password) {
@@ -60,15 +62,17 @@ const Login = () => {
         isClosable: true,
         position: "top",
       });
+      setLoading(false)
     } catch (error) {
       console.log(error);
       Toast({
-        title: "Erro no processo de envio",
+        title: "O username e o password Nao combinam",
         status: "error",
         duration: 3000,
         isClosable: true,
         position: "top",
       });
+      setLoading(false)
     }
   };
   return (
@@ -113,7 +117,7 @@ const Login = () => {
               </InputRightElement>
             </InputGroup>
           </FormControl>
-          <Button colorScheme="blue" w="full" onClick={handleSubmit}>
+          <Button colorScheme="blue" w="full" onClick={handleSubmit} loading={loading}>
             Login
           </Button>
         </VStack>

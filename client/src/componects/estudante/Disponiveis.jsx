@@ -90,7 +90,7 @@ const Disponiveis = () => {
             alignSelf="end"
             onClick={onOpen}
           >
-            apresentacao
+            Apresentação
           </Button>
 
           {apresentacoes.length > 0

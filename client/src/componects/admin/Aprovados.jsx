@@ -43,8 +43,10 @@ const Aprovados = () => {
   const [fecthAgain, setFecthAgain] = useState(false);
   const [selectedApresentacao, setSelectedApresentacao] = useState(false);
   const [descricao, setDescricao] = useState(
-    "um texto aleatorio inventado no momento para prencher a base de dados no texte de aprovacao"
+    "um texto aleatório inventado no momento para prencher a base de dados no texte de aprovação"
   );
+  const [loading, setLoading] = useState(false);
+
   const recordPerPage = 3;
   const lastIndex = currentPage * recordPerPage;
   const firstIndex = lastIndex - recordPerPage;
@@ -54,17 +56,16 @@ const Aprovados = () => {
   const numbers = [...Array(npage + 1).keys()].slice(1);
 
   async function fetchApresentacoes() {
+    setLoading(true);
     try {
-      const response = await ApresentacaoService.getApresentacoes(user.token);
-      const data = response.data;
-      data.map((apresentacao) => {
-        if (apresentacao.status === "APROVADO") {
-          setApresentacoes([...apresentacoes, apresentacao]);
-          console.log(apresentacoes);
-        }
-      });
-
+      const response = await ApresentacaoService.getApresentacoesEspecificas(
+        user.token,
+        "APROVADO"
+      );
+      setApresentacoes(response.data);
+      console.log(response.data);
       setSelectedApresentacao(apresentacoes[0]);
+      setLoading(false);
     } catch (error) {
       Toast({
         title: "Erro",
@@ -74,6 +75,7 @@ const Aprovados = () => {
         isClosable: true,
         position: "top-left",
       });
+      setLoading(false);
     }
   }
   useEffect(() => {
@@ -83,6 +85,7 @@ const Aprovados = () => {
     setCurentPage(id);
   };
   const handleStatus = async (_id, _idAuthor, status) => {
+    setLoading(true);
     try {
       const data = await ApresentacaoService.updadeApresentacao(
         { idApresentacao: _id, status: status },
@@ -99,18 +102,19 @@ const Aprovados = () => {
       console.log(notificacao);
       Toast({
         title: data.status,
-        description: `Apresentacao ${data.status}`,
+        description: `Apresentação ${data.status}`,
         status: "success",
         duration: 5000,
         isClosable: true,
         position: "top-left",
       });
       onClose();
+      setLoading(false);
       setFecthAgain(!fecthAgain);
     } catch (error) {
       Toast({
         title: "Erro",
-        description: "Falha no processo de aprovacao da apresentacoes",
+        description: "Falha no Processo de Aprovação da apresentações",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -141,9 +145,9 @@ const Aprovados = () => {
                 <Tr>
                   <Th color="#889F9E">Autor</Th>
                   <Th color="#889F9E">Supervisor</Th>
-                  <Th color="#889F9E">Ficheito</Th>
+                  <Th color="#889F9E">Ficheiro</Th>
                   <Th color="#889F9E">Status</Th>
-                  <Th color="#889F9E">accoes</Th>
+                  <Th color="#889F9E">acções</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -215,7 +219,33 @@ const Aprovados = () => {
                           borderRadius="base"
                           height="30px"
                           background="#F0F6FF"
+                          color="#46D676"
+                          isDisabled={true}
+                          onClick={() =>
+                            handleStatus(
+                              apresentacao._id,
+                              apresentacao.author._id,
+                              "APROVADO"
+                            )
+                          }
+                        >
+                          <Image
+                            src="/icons8-approved-48.png"
+                            borderRadius="full"
+                            boxSize="18px"
+                            mr="3px"
+                            alignSelf="center"
+                          />
+                          <Text alignSelf="center">Aprovar</Text>
+                        </Button>
+                        <Button
+                          fontWeight="normal"
+                          w="31%"
+                          borderRadius="base"
+                          height="30px"
+                          background="#F0F6FF"
                           color="#ED3548"
+                          isDisabled={loading}
                           onClick={() =>
                             handleStatus(
                               apresentacao._id,
@@ -239,6 +269,7 @@ const Aprovados = () => {
                           borderRadius="base"
                           height="30px"
                           background="#F0F6FF"
+                          isDisabled={loading}
                           color="#E0A536"
                           onClick={() => handleAvaliar(apresentacao)}
                         >
@@ -327,6 +358,7 @@ const Aprovados = () => {
                 background="#ED3548"
                 color="white"
                 mx={3}
+                isLoading={loading}
                 onClick={() =>
                   handleStatus(
                     selectedApresentacao._id,
