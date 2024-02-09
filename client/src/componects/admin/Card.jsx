@@ -2,7 +2,6 @@ import { Box, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 
 const Card = ({ type, total, percentual }) => {
-  // console.log(total);
   return (
     <Box
       w="300px"
