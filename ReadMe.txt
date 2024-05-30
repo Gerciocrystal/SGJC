@@ -14,6 +14,7 @@ Dependencias da aplicaçao:
 3- ir ao navegador e procurar a url: localhost:5173/
 ================================================Acessos==================================
 
+teste stage of branch
 
 ======================================Como Fazer o deploy===============================
 1- Va ao terminal do client e execute o comando "npm run build";
