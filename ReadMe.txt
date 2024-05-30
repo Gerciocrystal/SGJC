@@ -13,14 +13,7 @@ Dependencias da aplicaçao:
 
 3- ir ao navegador e procurar a url: localhost:5173/
 ================================================Acessos==================================
-admin:{
-	username: super
-	pass: 1234
-}
-user:{
-	username: 01.1992.2020,
-	pass:1234
-}
+
 
 ======================================Como Fazer o deploy===============================
 1- Va ao terminal do client e execute o comando "npm run build";
